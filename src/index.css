@@ -1,21 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --color-accent: #2563eb;
-  --color-accent-light: #3b82f6;
-  --color-marked: #dcfce7;
-  --color-marked-border: #22c55e;
-  --color-bingo: #fbbf24;
+  --color-bg: #0f1021;
+  --color-bg-secondary: #191a2e;
+  --color-accent: #00ffe7;
+  --color-accent-light: #00b3ff;
+  --color-marked: #ff00ea;
+  --color-marked-border: #fffb00;
+  --color-bingo: #fffb00;
+  --color-glow: #00ffe7;
+  --font-cyber: 'Orbitron', 'Share Tech Mono', 'Inter', monospace, sans-serif;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap');
 
 html,
 body,
 #root {
   height: 100%;
+  background: linear-gradient(135deg, #0f1021 60%, #191a2e 100%);
 }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-cyber);
+  color: var(--color-accent);
+  background: linear-gradient(135deg, #0f1021 60%, #191a2e 100%);
+  min-height: 100vh;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* Neon glow utility */
+.neon-glow {
+  text-shadow:
+    0 0 8px var(--color-glow),
+    0 0 16px var(--color-glow),
+    0 0 32px var(--color-glow);
+}
+
+/* Glass effect utility */
+.glass {
+  background: rgba(25, 26, 46, 0.7);
+  backdrop-filter: blur(8px) saturate(180%);
+  border: 1.5px solid var(--color-accent-light);
+  box-shadow: 0 0 24px 2px var(--color-accent-light);
 }
