@@ -23,6 +23,30 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"label": "npm: lint",
+			"type": "shell",
+			"command": "npm run lint",
+			"problemMatcher": []
+		},
+		{
+			"label": "npm: test",
+			"type": "shell",
+			"command": "npm run test",
+			"problemMatcher": []
+		},
+		{
+			"label": "npm: build",
+			"type": "shell",
+			"command": "npm run build",
+			"problemMatcher": []
+		},
+		{
+			"label": "open: preview",
+			"type": "shell",
+			"command": "$BROWSER http://localhost:5173",
+			"problemMatcher": []
 		}
 	]
 }
