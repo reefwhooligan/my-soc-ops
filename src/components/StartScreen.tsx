@@ -56,6 +56,7 @@ const QUIZ_OPTIONS: QuizOption[] = [
 export function StartScreen({ onStart }: StartScreenProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [phase, setPhase] = useState<'quiz' | 'result'>('quiz');
+  const [playHovered, setPlayHovered] = useState(false);
 
   function handleSelect(id: string) {
     if (selected) return;
@@ -141,7 +142,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
 
           {/* Options */}
           <div className="space-y-2">
-            {QUIZ_OPTIONS.map((opt) => {
+            {QUIZ_OPTIONS.map((opt, index) => {
               const isSelected = selected === opt.id;
               const isDimmed = selected !== null && !isSelected;
               return (
@@ -151,6 +152,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
                   disabled={!!selected}
                   className="quiz-option w-full text-left rounded-lg p-3 flex items-center gap-3"
                   style={{
+                    animationDelay: `${0.15 + index * 0.12}s`,
                     background: isSelected
                       ? `linear-gradient(90deg, ${opt.color}26 0%, ${opt.color}0d 100%)`
                       : 'rgba(25, 26, 46, 0.75)',
@@ -257,6 +259,8 @@ export function StartScreen({ onStart }: StartScreenProps) {
 
             <button
               onClick={onStart}
+              onMouseEnter={() => setPlayHovered(true)}
+              onMouseLeave={() => setPlayHovered(false)}
               className="w-full py-4 px-8 rounded-lg text-lg font-bold neon-glow"
               style={{
                 background: `linear-gradient(90deg, ${option.color} 0%, #ff00ea 100%)`,
@@ -265,13 +269,8 @@ export function StartScreen({ onStart }: StartScreenProps) {
                 border: `2px solid ${option.color}`,
                 fontFamily: 'var(--font-cyber)',
                 letterSpacing: '0.12em',
-                transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.03)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+                transition: 'transform 0.15s ease',
+                transform: playHovered ? 'scale(1.03)' : 'scale(1)',
               }}
             >
               LET'S PLAY →
