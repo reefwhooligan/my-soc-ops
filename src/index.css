@@ -13,8 +13,6 @@
   --font-cyber: 'Orbitron', 'Share Tech Mono', 'Inter', monospace, sans-serif;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap');
-
 html,
 body,
 #root {
@@ -46,4 +44,191 @@ body {
   backdrop-filter: blur(8px) saturate(180%);
   border: 1.5px solid var(--color-accent-light);
   box-shadow: 0 0 24px 2px var(--color-accent-light);
+}
+
+/* ─── Onboarding sequence animations ─────────────────────────────────────── */
+
+/* Background grid */
+.ob-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 255, 231, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 231, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  animation: ob-grid-in 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ob-grid-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Sweeping scanline */
+.ob-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(transparent, rgba(0, 255, 231, 0.06), transparent);
+  animation: ob-scan 4s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes ob-scan {
+  from { top: -100px; }
+  to   { top: 100%; }
+}
+
+/* Corner bracket decorations */
+.ob-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+.ob-corner.tl { top: 12px; left: 12px; border-top: 2px solid var(--color-accent); border-left: 2px solid var(--color-accent); }
+.ob-corner.tr { top: 12px; right: 12px; border-top: 2px solid var(--color-accent); border-right: 2px solid var(--color-accent); }
+.ob-corner.bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--color-accent); border-left: 2px solid var(--color-accent); }
+.ob-corner.br { bottom: 12px; right: 12px; border-bottom: 2px solid var(--color-accent); border-right: 2px solid var(--color-accent); }
+.ob-corner.visible { opacity: 0.5; }
+
+/* Title block */
+.ob-title {
+  opacity: 0;
+  transform: translateY(-18px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.ob-title.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Glitch effect on the title text */
+.ob-glitch {
+  position: relative;
+  display: inline-block;
+}
+.ob-glitch::before,
+.ob-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.ob-title.visible .ob-glitch {
+  animation: ob-glitch-base 5s ease-in-out 0.6s infinite;
+}
+.ob-title.visible .ob-glitch::before {
+  color: var(--color-marked);
+  text-shadow: 0 0 8px var(--color-marked);
+  animation: ob-glitch-a 5s ease-in-out 0.6s infinite;
+}
+.ob-title.visible .ob-glitch::after {
+  color: var(--color-accent);
+  text-shadow: 0 0 8px var(--color-accent);
+  animation: ob-glitch-b 5s ease-in-out 0.65s infinite;
+}
+
+@keyframes ob-glitch-base {
+  0%, 80%, 100% { transform: none; }
+  82%            { transform: translate(-2px, 0) skewX(-2deg); }
+  86%            { transform: translate(2px, 0) skewX(1deg); }
+  90%            { transform: none; }
+}
+@keyframes ob-glitch-a {
+  0%, 80%, 100% { opacity: 0; transform: none; clip-path: none; }
+  82%            { opacity: 0.7; transform: translate(-4px, 1px); clip-path: polygon(0 25%, 100% 25%, 100% 45%, 0 45%); }
+  86%            { opacity: 0.5; transform: translate(3px, -1px); clip-path: polygon(0 60%, 100% 60%, 100% 78%, 0 78%); }
+  90%            { opacity: 0; }
+}
+@keyframes ob-glitch-b {
+  0%, 80%, 100% { opacity: 0; transform: none; clip-path: none; }
+  83%            { opacity: 0.6; transform: translate(4px, -2px); clip-path: polygon(0 40%, 100% 40%, 100% 58%, 0 58%); }
+  88%            { opacity: 0; }
+}
+
+/* Status badge under the title */
+.ob-status {
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: opacity 0.5s ease-out 0.3s, transform 0.5s ease-out 0.3s;
+  transform-origin: center;
+}
+.ob-title.visible .ob-status {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Rules card */
+.ob-card {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+}
+.ob-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Individual rule items */
+.ob-rule {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+.ob-rule.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* CTA button container */
+.ob-cta {
+  opacity: 0;
+  transform: translateY(18px) scale(0.96);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.ob-cta.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Glow pulse on the start button */
+@keyframes ob-glow-pulse {
+  0%, 100% { box-shadow: 0 0 14px 2px var(--color-accent), 0 0 28px 4px var(--color-marked); }
+  50%       { box-shadow: 0 0 30px 6px var(--color-accent), 0 0 56px 10px var(--color-marked); }
+}
+.ob-start-btn {
+  animation: ob-glow-pulse 2.2s ease-in-out infinite;
+}
+
+/* Phase progress dots */
+.ob-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-accent-light);
+  background: transparent;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+.ob-dot.active {
+  background: var(--color-accent);
+  box-shadow: 0 0 8px 2px var(--color-accent);
+}
+
+/* Fast-skip mode: collapse transition durations for all onboarding elements */
+.ob-fast .ob-title,
+.ob-fast .ob-card,
+.ob-fast .ob-rule,
+.ob-fast .ob-cta,
+.ob-fast .ob-dot,
+.ob-fast .ob-corner {
+  transition-duration: 80ms;
+}
+.ob-fast .ob-status {
+  transition-delay: 0ms;
+  transition-duration: 80ms;
 }
